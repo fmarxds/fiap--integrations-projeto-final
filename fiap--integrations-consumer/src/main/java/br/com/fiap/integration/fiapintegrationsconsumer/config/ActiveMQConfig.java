@@ -1,32 +1,50 @@
 package br.com.fiap.integration.fiapintegrationsconsumer.config;
 
+import br.com.fiap.integration.fiapintegrationsconsumer.listener.DroneMessageListener;
 import lombok.RequiredArgsConstructor;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.sound.midi.Receiver;
 
 @Configuration
 @RequiredArgsConstructor
 public class ActiveMQConfig {
 
-    @Value("${rabbitmq.queueName}")
-    private final String queueName;
+    @Value("${rabbitmq.queue}")
+    private String DRONE_QUEUE;
 
     @Bean
     Queue queue() {
-        return new Queue(queueName, false);
+        return new Queue(DRONE_QUEUE, false);
     }
 
-    @RabbitListener(queues = "${rabbitmq.queueName}")
-    public void listen(String in) {
-        System.out.println("message - " + in);
+    @Bean
+    TopicExchange exchange() {
+        return new TopicExchange("");
+    }
+
+    @Bean
+    Binding binding(Queue queue, TopicExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange).with(DRONE_QUEUE);
+    }
+
+    @Bean
+    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
+                                             MessageListenerAdapter listenerAdapter) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(DRONE_QUEUE);
+        container.setMessageListener(listenerAdapter);
+
+        return container;
+    }
+
+    @Bean
+    MessageListenerAdapter listenerAdapter(DroneMessageListener receiver) {
+        return new MessageListenerAdapter(receiver, "receiveMessage");
     }
 }

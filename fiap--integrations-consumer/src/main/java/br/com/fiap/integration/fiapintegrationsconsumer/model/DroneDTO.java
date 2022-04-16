@@ -1,8 +1,10 @@
 package br.com.fiap.integration.fiapintegrationsconsumer.model;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Data
@@ -17,5 +19,8 @@ public class DroneDTO {
     private double degree;
     private double umidity;
     private boolean isTracking;
+
+    @CreationTimestamp
+    private Timestamp receivedAt;
 
 }

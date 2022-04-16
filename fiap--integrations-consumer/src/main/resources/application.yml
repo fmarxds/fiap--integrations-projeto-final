@@ -1,1 +1,14 @@
+spring:
+  rabbitmq:
+    addresses: amqp://${user}:${password}@jackal.rmq.cloudamqp.com/${user}
+    url: jackal.rmq.cloudamqp.com
+    password: ${ACTIVE_MQ_PASSWORD}
+    user: ${ACTIVE_MQ_USER}
+  datasource:
+    url: jdbc:h2:mem:fiap-drone-db;MODE=MYSQL
+    username: root
+    password:
+
+rabbitmq:
+  queue: "queue-drone-sensorial"
 
