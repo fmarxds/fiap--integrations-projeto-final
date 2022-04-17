@@ -1,6 +1,6 @@
 spring:
   rabbitmq:
-    addresses: amqp://${user}:${password}@jackal.rmq.cloudamqp.com/${user}
+    addresses: amqp://${ACTIVE_MQ_USER}:${ACTIVE_MQ_PASSWORD}@jackal.rmq.cloudamqp.com/${ACTIVE_MQ_USER}
     url: jackal.rmq.cloudamqp.com
     password: ${ACTIVE_MQ_PASSWORD}
     user: ${ACTIVE_MQ_USER}
