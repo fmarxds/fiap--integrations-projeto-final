@@ -1,9 +1,6 @@
 spring:
   rabbitmq:
-    addresses: amqp://${ACTIVE_MQ_USER}:${ACTIVE_MQ_PASSWORD}@jackal.rmq.cloudamqp.com/${ACTIVE_MQ_USER}
-    url: jackal.rmq.cloudamqp.com
-    password: ${ACTIVE_MQ_PASSWORD}
-    user: ${ACTIVE_MQ_USER}
+    addresses: amqps://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@jackal.rmq.cloudamqp.com/${RABBITMQ_USER}
   datasource:
     url: jdbc:h2:mem:fiap-drone-db;MODE=MYSQL
     username: root
