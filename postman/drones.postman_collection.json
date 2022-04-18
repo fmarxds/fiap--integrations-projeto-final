@@ -1,0 +1,37 @@
+{
+	"info": {
+		"_postman_id": "be7cdaae-e413-49eb-b867-504e83214e02",
+		"name": "drones",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Drone Data Status",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"droneId\": \"cd06c426-e8b4-40e5-836d-c25c07aadc55\",\n    \"latitude\": -23.507909,\n    \"longitude\": -46.628876,\n    \"temperatura\": 15,\n    \"umidade\": 80,\n    \"ativarRastreamento\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5000/drones/data",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"drones",
+						"data"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
