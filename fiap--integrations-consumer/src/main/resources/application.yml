@@ -1,0 +1,7 @@
+spring:
+  rabbitmq:
+    addresses: amqps://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@jackal.rmq.cloudamqp.com/${RABBITMQ_USER}
+
+rabbitmq:
+  queue: "queue-drone-sensorial"
+
