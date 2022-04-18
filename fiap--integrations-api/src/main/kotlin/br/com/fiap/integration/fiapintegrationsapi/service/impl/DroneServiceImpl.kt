@@ -4,29 +4,37 @@ import br.com.fiap.integration.fiapintegrationsapi.model.DroneData
 import br.com.fiap.integration.fiapintegrationsapi.service.DroneService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.core.AmqpAdmin
+import org.springframework.amqp.core.Queue
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Service
 import java.text.DecimalFormat
 import java.util.*
+import javax.annotation.PostConstruct
 import kotlin.random.Random
 
 @Service
 class DroneServiceImpl(
+    private val amqpAdmin: AmqpAdmin,
     private val rabbitTemplate: RabbitTemplate,
     private val objectMapper: ObjectMapper,
 ) : DroneService {
 
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    override fun postDroneStatusData(droneData: DroneData) {
-        val message = objectMapper.writeValueAsString(droneData)
-        rabbitTemplate.convertAndSend("queue-drone-sensorial", message)
-        logger.info("Mensagem enviada: $message")
+    companion object {
+        private const val queueName: String = "queue-drone-sensorial"
     }
 
-    @Scheduled(fixedDelay = 5000)
-    fun postDroneStatusDataBot() {
+    override fun postDroneStatusData(droneData: DroneData) {
+        val message = objectMapper.writeValueAsString(droneData)
+        rabbitTemplate.convertAndSend(queueName, message)
+        logger.info("-->MENSAGEM_ENVIADA: $message")
+    }
+
+    @Scheduled(fixedDelay = 10000)
+    private fun postDroneStatusDataBot() {
 
         val droneData = DroneData(
             droneId = UUID.randomUUID().toString(),
@@ -39,6 +47,13 @@ class DroneServiceImpl(
 
         this.postDroneStatusData(droneData)
 
+    }
+
+    @PostConstruct
+    private fun createQueues() {
+        if (amqpAdmin.getQueueInfo(queueName) == null) {
+            amqpAdmin.declareQueue(Queue(queueName, true))
+        }
     }
 
 }
