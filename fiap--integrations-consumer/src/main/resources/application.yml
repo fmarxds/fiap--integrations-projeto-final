@@ -1,10 +1,6 @@
 spring:
   rabbitmq:
     addresses: amqps://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@jackal.rmq.cloudamqp.com/${RABBITMQ_USER}
-  datasource:
-    url: jdbc:h2:mem:fiap-drone-db;MODE=MYSQL
-    username: root
-    password:
 
 rabbitmq:
   queue: "queue-drone-sensorial"

@@ -16,11 +16,8 @@ public class DroneDTO {
     private UUID droneId;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private double degree;
-    private double umidity;
-    private boolean isTracking;
-
-    @CreationTimestamp
-    private Timestamp receivedAt;
+    private double temperatura;
+    private double umidade;
+    private boolean ativarRastreamento;
 
 }
